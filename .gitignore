@@ -1,0 +1,10 @@
+### We are to add some files we don't need in production here 
+.env
+__pycache__/  
+db.sqlite3
+Pipfile.lock
+Pipfile
+static_root
+Procfile
+
+##.DS Store For Mac Users only 

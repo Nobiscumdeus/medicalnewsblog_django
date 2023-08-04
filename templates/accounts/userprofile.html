@@ -1,0 +1,23 @@
+{% extends 'medicblog/base.html' %}
+
+
+{% block content %}
+
+{% if user %}
+<h1> Here is the profile page of {{ user.username }}</h1>
+{% else %}
+<h1> Here is the User Profile Page , Welcome </h1>
+{% endif %}
+
+
+{% for post in posts %}
+<p> {{ post.title }}</p>
+<p> {{ post.body}} </p>
+    
+{% endfor %}
+    
+
+
+    
+{% endblock content %}
+    

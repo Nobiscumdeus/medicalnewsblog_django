@@ -1,0 +1,21 @@
+{% extends 'medicblog/base.html' %}
+
+{% comment %}
+    {% load crispy_forms_tags %}
+{% endcomment %}
+    
+
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  
+    {% comment %}
+        To use crispy {{ form|crispy }}
+    {% endcomment %}
+        
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock content %}
+

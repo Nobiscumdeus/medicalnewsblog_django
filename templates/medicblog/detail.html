@@ -1,0 +1,21 @@
+{% extends 'medicblog/base.html' %}
+
+{% block content %}
+
+<div class="post_entry">
+    
+    {% comment %}
+        Note that automatically we can access our DetailView with either post or object
+        Another way to customize it is to state eg context_object_name='detail' in the DetailView
+    {% endcomment %}
+    <h2> Author : Dr  {{ user.username }} </h2>
+        
+    <h2> Title : {{ post.title }} </h2>  
+    <p> 
+        Full Content <hr/>
+        {{ post.body }}
+    </p>
+</div>
+<a href="{% url 'medicblog:update' post.pk %}"> Edit the Post  </a> | 
+<a href="{% url 'medicblog:delete' post.pk %}"> Delete the Post  </a>
+{% endblock content %}

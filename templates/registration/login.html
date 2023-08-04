@@ -1,0 +1,19 @@
+{% extends 'medicblog/base.html' %}
+
+{% comment %}
+    Django automatically looks for registration/login.html to get the template related to login
+{% endcomment %}
+    
+
+
+{% block content %}
+<h2> Login Page </h2>
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+   <button type="submit"> Login </button>
+    </form
+    
+{% endblock content %}
+
+    

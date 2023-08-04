@@ -1,0 +1,47 @@
+*
+{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body
+{
+    min-height:100vh;
+    background:#333;
+    color:#fff;
+    font-family:'Source sans Pro',sans-serif;
+    font-size:18px;
+}
+header{
+    border-bottom:1px solid black;
+    margin-bottom:2rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+header h1
+{
+    text-align:center;
+    color:#fff;
+}
+
+.post_entry
+{
+    margin-bottom:2rem;
+    
+}
+.post_entry h2
+{
+    margin:0.5rem 0;
+}
+.post_entry a:visited
+{
+    color:blue;
+    text-decoration:none;
+
+}
+.post_entry p
+{
+    margin:0;
+    font-weight:400;
+}

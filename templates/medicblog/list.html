@@ -1,0 +1,23 @@
+{% extends 'medicblog/base.html' %}
+
+{% block content %}
+
+
+
+<a href="{% url 'medicblog:create' %}">Create Blog Post here? </a> 
+    {% for post in object_list  %}
+    <div class="post_list">
+        <h2>
+            <a href="{% url 'medicblog:detail' post.pk %}">{{post.title}} </a> 
+            
+        </h2>
+        <p> 
+            {{ post.body|truncatewords:10 }}
+        </p>
+
+    </div>
+    
+    {% endfor %}
+        
+
+{% endblock content %}
