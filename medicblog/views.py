@@ -3,15 +3,16 @@ from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from .models import Post
 from django.urls import reverse_lazy
-
+from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+from django.views import View #The View here is general, as opposed to say ListView which is specific
 
-# Create your views here.
-
+from django.core.mail import EmailMessage
+from .forms import EmailForm  
 class MedicBlogListView(ListView):  #LoginRequiredMixin can also be added here, It prevents users from doing activities like login etc until logged in
     model=Post
     template_name='medicblog/list.html'
-    
+    paginate_by=5
 class MedicBlogDetailView(LoginRequiredMixin,DetailView):
     model=Post
     template_name='medicblog/detail.html'
@@ -35,10 +36,35 @@ class MedicBlogDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     success_url=reverse_lazy('list') #Since after deletion, the detail doesn't exist anymore, just reverse to list page again then
     
     
-    
-    
-
-
-
-
-
+class EmailView(View):
+    template_name='medicblog/email.html'
+    def get(self,request):
+        form=EmailForm()
+        return render(request,'medicblog/form.html',{'form':form})
+    def post(self,request):
+        form=EmailForm(request.POST)
+        if form.is_valid():
+            recipient=form.cleaned_data['recipient']
+            subject=form.cleaned_data['subject']
+            message=form.cleaned_data['message']
+            
+           email=EmailMessage(
+                subject=subject,
+                body=message,
+                from_email='emmanueladeola990@gmail.com',
+                to=[recipient],
+           
+            
+           
+           )
+            try:
+            email.send()
+            success_message="Email sent successfully" 
+            except Exception as e:
+                success_message=f"An Error occurred: {str(e)}"
+                #success_message="Ooops!!, An error occurred, could not be sent"
+            return render(request,self.template_name,{'form':form,'success_message':success_message})
+            
+        else:
+            return render(request,self.template_name,{'form':form})
+           

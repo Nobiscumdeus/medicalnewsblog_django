@@ -12,7 +12,7 @@ urlpatterns=[
     path('post/<int:pk>/edit',views.MedicBlogUpdateView.as_view(),name='update'),
     path('post/<int:pk>/delete',views.MedicBlogDeleteView.as_view(),name='delete'),
     
-    
+    path('email',views.EmailView.as_view(),name='email'),
     
     
     

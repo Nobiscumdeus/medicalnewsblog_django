@@ -16,8 +16,22 @@
         </p>
 
     </div>
-    
+   
     {% endfor %}
+    <div class="pagination">
+        <!--  Here we have our class based pagination -->
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}"> Previous </a>
+        {% endif %}
+        
+        <span class="current-page"> {{ page.number }}</span>
+
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}"> Next </a>
+
+        {% endif %}
+       </div>
+        
         
 
 {% endblock content %}
