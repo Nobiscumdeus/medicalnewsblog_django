@@ -1,18 +1,28 @@
 {% extends 'medicblog/base.html' %}
+{% load crispy_forms_tags %}
+
 
 {% comment %}
-    {% load crispy_forms_tags %}
+  {% load crispy_forms_tags %}
+    
 {% endcomment %}
     
+  
 
 {% block content %}
+<h1> Create New Post </h1>
 
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}  
-    {% comment %}
-        To use crispy {{ form|crispy }}
-    {% endcomment %}
+   
+  {% crispy form %}
+   {% comment %}
+   To use crispy {{ form|crispy }}
+
+    
+   {% endcomment %}
+    
+        
         
     <input type="submit" value="Submit" />
 </form>

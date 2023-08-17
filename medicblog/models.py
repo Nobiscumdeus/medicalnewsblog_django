@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.conf import settings
+from django.utils import timezone
+
+#To utilize taggit models 
+from taggit.managers import TaggableManager
 
 
 
@@ -16,6 +20,9 @@ class Post(models.Model):
     body=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True) 
+    tags=TaggableManager() #This is comming from the taggit library installed
+    
+
     
     def __str__ (self):
         return self.title
@@ -25,8 +32,9 @@ class Post(models.Model):
     
         
 class Comments(models.Model): # new
-    article = models.ForeignKey(Post, on_delete=models.CASCADE)
+    article = models.ForeignKey(Post, on_delete=models.CASCADE,related_name='comments')
     comment = models.CharField(max_length=140)
+    body=models.TextField(default="Expect new comments soon...")
     author = models.ForeignKey(
     settings.AUTH_USER_MODEL,
     on_delete=models.CASCADE,related_name='comments'

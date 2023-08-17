@@ -7,6 +7,12 @@ class CommentsInline(admin.StackedInline):
     model=Comments
 
 class PostAdmin(admin.ModelAdmin):
+    '''
+     list_display=('name','email','created','etc')
+    list_filter=('active','created','updated')
+    search_fields=('name','email')
+    '''
+   
     inlines=[
         CommentsInline,
     ]

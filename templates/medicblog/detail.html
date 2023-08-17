@@ -15,7 +15,55 @@
         Full Content <hr/>
         {{ post.body }}
     </p>
+    <p class="tags">
+        
+        {% comment %}
+            Lets add the tags from taggit 
+        {% endcomment %}
+        Tags : {{ post.tags.all | join:', ' }}
+            
+    </p>
 </div>
-<a href="{% url 'medicblog:update' post.pk %}"> Edit the Post  </a> | 
-<a href="{% url 'medicblog:delete' post.pk %}"> Delete the Post  </a>
+
+{% comment %}
+    To ensure the rightful owner can edit or delete the post 
+
+{% endcomment %}
+    {% if post.author==request.user %}
+        
+        <a href="{% url 'medicblog:update' post.pk %}"> Edit the Post  </a> | 
+        <a href="{% url 'medicblog:delete' post.pk %}"> Delete the Post  </a>
+    {% endif %}
+
+<div>
+    
+    {% with comments.count as total_comments %}
+
+        <h2> 
+            {{ total_comments }} comment {{ total_comments|pluralize}}
+        </h2>
+        
+    {% endwith %}
+        
+</div>
+
+<div>
+    <h3> Lists of Comments </h3>
+        {% for comment in comments  %}
+            <p class="info">
+                Comment {{ forloop.counter }} by {{ comment.article }}
+                
+                {% comment %}
+                    {[ comment.created ]}
+                {% endcomment %}
+                    
+            </p>
+            {{ comment.body |linebreaks }}
+        {% endfor %}
+        
+        {% comment %}
+            {% include 'comment_form.html' %}
+        {% endcomment %}
+            
+</div>
 {% endblock content %}

@@ -55,12 +55,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'medicblog',
     'accounts',
-    'pages' #To control some general static pages like Home page, About Section ets
-   # 'crispy_forms'  #This allows for smoother styling with bootstrap 4
+    'pages', #To control some general static pages like Home page, About Section ets
+   'crispy_forms',  #This allows for smoother styling with bootstrap 4
    # 'whitenoise.runserver_nostatic' ### This is needed since django
    # may not serve static files in production or to make the 
    # weight be thrown off it
-   
+   #django_taggit app is a library we use for tags
+   'taggit',
    
     
     
@@ -68,7 +69,7 @@ INSTALLED_APPS = [
     
     
 ]
-#CRISPY_TEMPLATE_PACK='bootstrap4'
+CRISPY_TEMPLATE_PACK='bootstrap4'  #Other versions of bootstrap could also be specified 
 #We want a CustomUser authentication
 AUTH_USER_MODEL='accounts.CustomUser'
 
@@ -91,11 +92,15 @@ TEMPLATES = [
         'DIRS': [str(BASE_DIR.joinpath('templates'))], #This is used to configure our template/html file
         'APP_DIRS': True,
         'OPTIONS': {
+            
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders':[
+                'crispy_forms.template_pack.Loader', #This is for loading crispy forms 
             ],
         },
     },
@@ -238,11 +243,28 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL='home' #This is coming due to django.contrib.auth.urls added to the urls.py of the root
-LOGOUT_REDIRECT_URL='home'  #Login, logout are singlehanded handed by django.contrib.auth.urls and the registration templates
+#LOGIN_REDIRECT_URL='home' #This is coming due to django.contrib.auth.urls added to the urls.py of the root
+LOGOUT_REDIRECT_URL='medicblog/'  #Login, logout are singlehanded handed by django.contrib.auth.urls and the registration templates
 #Signup is what we need a new accounts app for essentially 
+LOGIN_REDIRECT_URL='medicblog:list'
 
 
 #This email configuration is for the purpose of password reset
+#This code tells Django to write email to the console in case we don't use the smtp server
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend' 
+''' '''
 
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
