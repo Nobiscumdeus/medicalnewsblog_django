@@ -15,7 +15,7 @@
 <form method="POST">
     {% csrf_token %}
    
-  {% crispy form %}
+ {{ form.as_p }}
    {% comment %}
    To use crispy {{ form|crispy }}
 

@@ -29,11 +29,14 @@
     To ensure the rightful owner can edit or delete the post 
 
 {% endcomment %}
-    {% if post.author==request.user %}
+
+    {% if post.author == request.user %}
         
         <a href="{% url 'medicblog:update' post.pk %}"> Edit the Post  </a> | 
         <a href="{% url 'medicblog:delete' post.pk %}"> Delete the Post  </a>
     {% endif %}
+
+
 
 <div>
     

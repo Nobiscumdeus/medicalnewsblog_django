@@ -4,15 +4,17 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views import View
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm
+from django.contrib.auth.views import LoginView
+from .forms import CustomUserCreationForm,CustomLoginForm
 
 
 from medicblog.models import Post
+
 # Create your views here.
 
 
-
-
+def Home(request):
+    return render(request,'accounts/home.html')
 
 class SignUpView(View):
     template_name='accounts/signup.html'
@@ -29,7 +31,10 @@ class SignUpView(View):
             return redirect('medicblog:list')
         return render(request,self.template_name,{'form':form})
     
-    
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login.html'
+    authentication_form = CustomLoginForm
+
 
 
 

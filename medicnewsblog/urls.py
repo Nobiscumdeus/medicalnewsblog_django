@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+
 #To serve media files during development
 from django.conf.urls.static import static
 from django.conf import settings 
 from django.contrib.auth import views as auth_views
-
+from django.contrib.auth.views import LogoutView
 
 '''
     Note, if you decide to use the auth_views here instead of the views of each app, django looks for the djanto templates in a registration folder,
@@ -30,13 +31,19 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('medicblog/',include('medicblog.urls')), 
-    path('login/',auth_views.LoginView.as_view(),name='login'),
-    path('logout/',auth_views.LogoutView.as_view(),name='logout'),
+    path('medicblog/',include('medicblog.urls')),
+    path('auth-api',include('rest_framework.urls')),
+    path('api/',include('api.urls')),
+    path('lmsapp/',include('lmsapp.urls')),
+    #Below are views that are used within the application 
+    #path('login/',auth_views.LoginView.as_view(),name='login'),
+    
     path('password_reset',auth_views.PasswordResetView.as_view(),name='password_reset'),
     path('password_reset/done',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
     path('password_reset/<uidb64>/<token>',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     path('password_reset_complete',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
+    
+    
     
     
     #path('accounts/',include('django.contrib.auth.urls')), #doing this in oder to extend the Login,Logout,Signup pane provided by Django
@@ -49,15 +56,10 @@ urlpatterns = [
     path('',include('pages.urls')),
     path('accounts/',include('accounts.urls')),
     
+    path('doctorapi/',include('doctorapi.urls')),
     
     
-    
-    
-    
-    
-    
-    
-    
+ 
     
     
     

@@ -15,9 +15,15 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 #### We must add these in order to use the environment variables being set 
-from environs import Env
-env=Env()
-env.read_env()
+#from environs import Env
+#env=Env()
+#env.read_env()
+
+
+from decouple import config
+SECRET_KEY=config('SECRET_KEY')
+
+
 
 
 
@@ -27,7 +33,7 @@ env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-i7hum1%z_-d-(x#b(6bk#=3wlz0pc-5=q^e3yp*#7!^pbz0yf#'
 #### In Production, the secret key is going to change as we get it from the environment variables 
-SECRET_KEY=env.str("SECRET_KEY")
+#SECRET_KEY=env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True   ###For production purpose note that 
@@ -62,16 +68,20 @@ INSTALLED_APPS = [
    # weight be thrown off it
    #django_taggit app is a library we use for tags
    'taggit',
+   'api', #The application using the rest framework 
+   'rest_framework' , #using the Django Rest Framework here 
+   'rest_framework.authtoken', ##To allow the use of token to access our api 
+   'doctorapi',    
+    'ckeditor',
+    'django_countries',
+    'bootstrap4',
    
-    
-    
-    
-    
+
     
 ]
 CRISPY_TEMPLATE_PACK='bootstrap4'  #Other versions of bootstrap could also be specified 
 #We want a CustomUser authentication
-AUTH_USER_MODEL='accounts.CustomUser'
+AUTH_USER_MODEL='accounts.CustomUser' #So CustomUser is a model found in the accounts app
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,9 +109,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'loaders':[
-                'crispy_forms.template_pack.Loader', #This is for loading crispy forms 
-            ],
+           
         },
     },
 ]
@@ -244,18 +252,59 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #LOGIN_REDIRECT_URL='home' #This is coming due to django.contrib.auth.urls added to the urls.py of the root
-LOGOUT_REDIRECT_URL='medicblog/'  #Login, logout are singlehanded handed by django.contrib.auth.urls and the registration templates
+#LOGOUT_REDIRECT_URL='medicblog/'  #Login, logout are singlehanded handed by django.contrib.auth.urls and the registration templates
 #Signup is what we need a new accounts app for essentially 
-LOGIN_REDIRECT_URL='medicblog:list'
+#LOGIN_REDIRECT_URL='medicblog:list'
 
 
 #This email configuration is for the purpose of password reset
 #This code tells Django to write email to the console in case we don't use the smtp server
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend' 
+
+
 ''' '''
 
+##Rest Framework Configurations 
+REST_FRAMEWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication' 
+        #To use this , you need to add rest_framework.authtoken in the installed apps 
+        
+    ]
+}
 
 
+CKEDITOR_CONFIGS={
+    'default':{
+        'toolbar':'Custom',
+        'toolbar_Custom':[
+            ['Bold','Italic','Underline'],
+            ['Link'],
+            ['NumberedList','BulletedList'],
+            ['Source']
+        ]
+    
+        
+    }
+}
+
+LANGUAGE_CODE='en-us'
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('fr', 'French'),
+    # Add more languages as needed.
+]
+
+USE_I18N = True
+USE_L10N = True
+TIME_ZONE = 'UTC'
+
+LOCALE_PATHS=[
+    os.path.join(BASE_DIR,'locale'),
+]
+LOGIN_REDIRECT_URL='accounts:home'
+LOGOUT_REDIRECT_URL='accounts:logout'
 
 
 

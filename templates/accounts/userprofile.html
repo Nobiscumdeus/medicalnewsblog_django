@@ -2,22 +2,8 @@
 
 
 {% block content %}
+<h3> Welcome to the Home Page of the LMS Application </h3>
 
-{% if user %}
-<h1> Here is the profile page of {{ user.username }}</h1>
-{% else %}
-<h1> Here is the User Profile Page , Welcome </h1>
-{% endif %}
-
-
-{% for post in posts %}
-<p> {{ post.title }}</p>
-<p> {{ post.body}} </p>
-    
-{% endfor %}
+{% endblock }
     
 
-
-    
-{% endblock content %}
-    
