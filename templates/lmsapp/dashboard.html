@@ -1,0 +1,103 @@
+{% extends 'lmsapp/home.html' %}
+{% load static %}
+{% block content %}
+
+<!---- First Section-->
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Hello {{ user.username }}</strong> You should feel free to navigate the LMS Application 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!--- Second Section -->
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner mx-auto my-10">
+          <div class="carousel-item active">
+            <div class="d-flex justify-content-center">
+                <img class="d-block w-75 h-auto centered-image" src="{% static 'img/lmsapp/code.png' %}" alt="First slide">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-flex justify-content-center">
+                <img class="d-block w-75 h-auto centered-image" src="{% static 'img/lmsapp/code.png' %}" alt="Second slide">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-flex justify-content-center">
+                <img class="d-block w-75 h-auto centered-image" src="{% static 'img/lmsapp/hoc.png' %}" alt="Third slide">
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+
+
+
+
+
+<!----- Third Section -->
+<div class="row my-15">
+    <div class="col-md-4">
+        <!---- User Profile Section -->
+        <div class="card my-10 bg-light text-dark">
+            <div class="card-header ">
+                <h5>{{user.first_name}} {{user.last_name}}'s Profile </h5> 
+                <h6> Active Now : {{user.is_active}} </h6>
+            </div>
+            <div class="card-body text-center">
+                <img src="" alt="Your image" class="img-thumbnail" style="width:150px;height:150px">
+                <h4 class="card-title">Username: {{user.username}}</h4>
+                <p class="card-text"><strong> Email : {{user.email}}</strong></p>
+                <p class="card-text"> <strong>Age : {{user.age}} years old</strong></p>
+                <p class="card-text"> <strong>Role : {{user.role}}</strong></p>
+                <p class="card-text"> <strong>Last Login: {{user.last_login}}</strong></p>
+
+                <p class="card-text"> </p>
+            </div>
+            <div class="card-footer">
+                Log out ?
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <!---- Dashboard Content Section -->
+    </div>
+
+</div>
+<div class="private-files">
+
+</div>
+<div class="timeline">
+
+</div>
+<div class="online-users">
+
+</div>
+<div class="calendar">
+
+</div>
+<div class="upcoming-events">
+
+</div>
+<div class="foot">
+
+</div>
+
+
+
+
+{% endblock %}

@@ -9,17 +9,27 @@ from django_countries.fields import CountryField
 # Create your models here.
 class Specialization(models.Model):
     name=models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
 class Hospital(models.Model):
     name=models.CharField(max_length=100)
     location=models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name} @ {self.location}"
 class InsuranceCompany(models.Model):
     name=models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
 class Publication(models.Model):
     title=models.CharField(max_length=200)
     publication_date=models.DateField()
+    def __str__(self):
+        return f"{self.title} published {self.publication_date}"
 class MedicalSchool(models.Model):
     name=models.CharField(max_length=100)
     location=models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name} located in {self.location}"
 class Language(models.Model):
     LANGUAGE_CHOICES=[
         ('en','English'),('fr','French'),('es','Spanish'),
@@ -30,6 +40,9 @@ class Language(models.Model):
         
     ]
     name=models.CharField(max_length=50,choices=LANGUAGE_CHOICES)
+    def __str__(self):
+        return f"{self.name}"
+        
 #class Country(models.Model):
  #   name=models.CharField(max_length=100)
     

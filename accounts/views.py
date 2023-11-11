@@ -6,13 +6,14 @@ from django.views import View
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from .forms import CustomUserCreationForm,CustomLoginForm
+from django.contrib.auth.decorators import login_required
 
 
 from medicblog.models import Post
 
 # Create your views here.
 
-
+@login_required
 def Home(request):
     return render(request,'accounts/home.html')
 

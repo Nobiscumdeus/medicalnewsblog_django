@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_countries',
     'bootstrap4',
-   
+   'lmsapp',
 
     
 ]
