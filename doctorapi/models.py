@@ -2,6 +2,7 @@ from django.db import models
 from taggit.managers import TaggableManager
 from ckeditor.fields import RichTextField
 from django_countries.fields import CountryField
+from django.core.validators import MaxValueValidator,MinValueValidator
 
 
 
@@ -11,6 +12,8 @@ class Specialization(models.Model):
     name=models.CharField(max_length=100)
     def __str__(self):
         return f"{self.name}"
+    
+
 class Hospital(models.Model):
     name=models.CharField(max_length=100)
     location=models.CharField(max_length=100)
@@ -20,28 +23,15 @@ class InsuranceCompany(models.Model):
     name=models.CharField(max_length=100)
     def __str__(self):
         return f"{self.name}"
-class Publication(models.Model):
-    title=models.CharField(max_length=200)
-    publication_date=models.DateField()
-    def __str__(self):
-        return f"{self.title} published {self.publication_date}"
+
+
+
 class MedicalSchool(models.Model):
     name=models.CharField(max_length=100)
     location=models.CharField(max_length=100)
     def __str__(self):
         return f"{self.name} located in {self.location}"
-class Language(models.Model):
-    LANGUAGE_CHOICES=[
-        ('en','English'),('fr','French'),('es','Spanish'),
-        ('de','German',),('it','Italian'),('pt','Portuguese'),
-        ('nl','Dutch'),('ru','Russian'),('zh','Chinese'),
-        ('ja','Japanese'),('ko','Korean'),('ar','Arabic'),('hi','Hindi'),('bn','Bengali'),('ur','Urdu'),
-        ('tr','Turkish'),('sv','Swedish'),('da','Danish'),('no','Norwegian'),('fi','Finnish')
-        
-    ]
-    name=models.CharField(max_length=50,choices=LANGUAGE_CHOICES)
-    def __str__(self):
-        return f"{self.name}"
+
         
 #class Country(models.Model):
  #   name=models.CharField(max_length=100)
@@ -57,41 +47,46 @@ class Doctor(models.Model):
         ('Y','Yes'),
         ('N','No')
     ]
+    #Language Choices 
+    LANGUAGE_CHOICES=[
+        ('en','English'),('fr','French'),('es','Spanish'),
+        ('de','German',),('it','Italian'),('pt','Portuguese'),
+        ('nl','Dutch'),('ru','Russian'),('zh','Chinese'),
+        ('ja','Japanese'),('ko','Korean'),('ar','Arabic'),('hi','Hindi'),('bn','Bengali'),('ur','Urdu'),
+        ('tr','Turkish'),('sv','Swedish'),('da','Danish'),('no','Norwegian'),('fi','Finnish')
+        
+    ]
     first_name=models.CharField(max_length=100)
     middle_name=models.CharField(max_length=100)
     last_name=models.CharField(max_length=100)
     gender=models.CharField(
-            max_length=1,
-            choices=GENDER_CHOICES
+            max_length=2,
+            choices=GENDER_CHOICES,
+            default='N'
             )
     phone_number=models.CharField(max_length=15)
     
     email=models.EmailField()
     education=RichTextField()
     address=RichTextField()
-    town=models.CharField(max_length=100)
-    state=models.CharField(max_length=100)
+    town=models.CharField(max_length=100,default="Prefer not to sat")
+    state=models.CharField(max_length=100,default="Prefer not to say")
     skills=models.CharField(max_length=200,default="Coding")
     hobbies=models.CharField(max_length=200,default="Swimming")
     tags=TaggableManager()
-    specialization=models.ManyToManyField(
-        Specialization)
-    insurance_company=models.ManyToManyField(
-        InsuranceCompany
-         )
+   
     medical_school=models.ForeignKey(
         MedicalSchool,
         on_delete=models.CASCADE)
-    country=CountryField(blank=True)
-    publications=models.ForeignKey(
-        Publication,
-        on_delete=models.CASCADE
-        )
-    languages_spoken=models.ManyToManyField(
-        Language)
-    hospital_affiliations=models.ManyToManyField(
-        Hospital
-        )
+    #country=CountryField(blank=True)
+    
+    publications=models.TextField(help_text='Please provide the necessary details such as the title,year and author(s) of publication ')
+    
+    official_language=models.CharField(
+            max_length=2,
+            choices=LANGUAGE_CHOICES,default='en'
+            )
+    
     consultation_fee=models.DecimalField(
         max_digits=9,
         decimal_places=2)
@@ -104,17 +99,17 @@ class Doctor(models.Model):
             max_length=20,
             null=True
             )
-    average_rating=models.DecimalField(
-            max_digits=3,
-            decimal_places=2,null=True,
-            blank=True
+    average_rating=models.IntegerField(default=2,
+                                       validators=[
+                                           MaxValueValidator(5),
+                                           MinValueValidator(1)
+                                       ])
+    available_for_consultation=models.CharField(
+            max_length=2,
+            null=True,blank=True,
+            choices=AVAILABLE_CHOICES,
+            default='Y'
             )
-    #available_for_consultation=models.BooleanField(
-     #   default=True
-      #  )
-    available_for_consultation=models.BooleanField(
-          choices=AVAILABLE_CHOICES
-      )
     website=models.URLField(
         max_length=200,
         null=True,
@@ -123,9 +118,14 @@ class Doctor(models.Model):
     date_of_birth=models.DateField(
         null=True,
         blank=True)
+    hospitals=models.ManyToManyField(Hospital,blank=True)
+    insurance_companies=models.ManyToManyField(InsuranceCompany,blank=True)
+    country=models.ForeignKey('cities_light.Country',on_delete=models.SET_NULL,null=True,blank=True)
+    city=models.CharField(max_length=100,blank=True,null=True)
+    
     created_at=models.DateTimeField(auto_now_add=True)
     last_updated=models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Doctor {self.first_name}{self.last_name}"
+        return f"Doctor {self.first_name} {self.last_name}"
 

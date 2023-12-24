@@ -76,9 +76,15 @@ INSTALLED_APPS = [
     'django_countries',
     'bootstrap4',
    'lmsapp',
+   'cities_light', # An installed package to manage countries and cities for the applications 
+   
+   
+   
+   
 
     
 ]
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['NGR','USA']
 CRISPY_TEMPLATE_PACK='bootstrap4'  #Other versions of bootstrap could also be specified 
 #We want a CustomUser authentication
 AUTH_USER_MODEL='accounts.CustomUser' #So CustomUser is a model found in the accounts app
