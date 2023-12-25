@@ -1,21 +1,20 @@
 from rest_framework import serializers
-from .models import Doctor,Post
+from .models import Physician,Content
 
 
-class DoctorSerializer(serializers.ModelSerializer):
+
+class PhysicianSerializer(serializers.ModelSerializer):
   
     class Meta:
-        model=Doctor
+        model=Physician
         fields='__all__'
         
         
         
 
     
-class PostSerializer(serializers.ModelSerializer):
+class ContentSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Post
-        fields=[
-            'title',
-            'description'
-        ]
+        model=Content
+        fields='__all__'
+        

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
-from .models import Doctor,Post
+from .models import Physician,Content
 from rest_framework import generics
-from .serializers import DoctorSerializer,PostSerializer
+from .serializers import PhysicianSerializer,ContentSerializer
 
 #Third Party Imports
 from rest_framework.views import APIView 
@@ -10,6 +10,13 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 
+class PhysicianViewSet(viewsets.ModelViewSet):
+    queryset=Physician.objects.all()
+    serializer_class=PhysicianSerializer
+    
+class ContentViewSet(viewsets.ModelViewSet):
+    queryset=Content.objects.all()
+    serializer_class=ContentSerializer
 
 def home(request):
     return HttpResponse('<h2> You are Welcome </h2>')
@@ -38,9 +45,9 @@ class TestView(APIView):
             'age':23
         }
         return Response(data)
-    def post(self,request,*args,**kwargs):
+    def Content(self,request,*args,**kwargs):
         pass
-        #serializer=PostSerializer(data=request.data)
+        #serializer=ContentSerializer(data=request.data)
         
         if serializer.is_valid():
             

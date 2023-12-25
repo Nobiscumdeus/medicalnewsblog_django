@@ -1,7 +1,8 @@
 from django.db import models
 #Create the models here
+from ckeditor import RichTextField
 
-class Doctor(models.Model):
+class Physician(models.Model):
     name=models.CharField(max_length=100)
     specialty=models.CharField(max_length=100)
     medical_school=models.CharField(max_length=100)
@@ -13,11 +14,13 @@ class Doctor(models.Model):
     def __str__(self):
         return self.name
     
-class Post(models.Model):
+class Content(models.Model):
     title=models.CharField(max_length=200)
-    description=models.TextField()
+    author=models.ForeignKey(Physician,on_delete=models.CASCADE)
+    body=models.TextField(help_text="You can write your posts here",default="I am yet to write a post...")
     timestamp=models.DateTimeField(auto_now_add=True)
-    owner=models.ForeignKey(Doctor,on_delete=models.CASCADE)
+    
+    updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
-        return self.title
+        return f"{self.title} + {self.author}"
     

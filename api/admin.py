@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Doctor,Post
+from .models import Physician,Content
 
 # Register your models here.
-admin.site.register(Doctor)
-admin.site.register(Post)
+admin.site.register(Physician)
+admin.site.register(Content)
