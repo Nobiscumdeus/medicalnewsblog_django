@@ -1,6 +1,5 @@
 from django.db import models
 #Create the models here
-from ckeditor import RichTextField
 
 class Physician(models.Model):
     name=models.CharField(max_length=100)
