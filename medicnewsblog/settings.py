@@ -45,7 +45,7 @@ DEBUG = True   ###For production purpose note that
 ###DEBUG=env.bool("DEBUG",default=FALSE)  ##It means if DEBUG is not found, the it should be false, hence we are in development
 
 
-ALLOWED_HOSTS = []  #### During production these must be set 
+ALLOWED_HOSTS = ['localhost']  #### During production these must be set 
 ###Production Purpose 
 ### ALLOWED_HOSTS=['herokuapp.com','localhost','127.0.0.1']
 
@@ -71,19 +71,21 @@ INSTALLED_APPS = [
    'api', #The application using the rest framework 
    'rest_framework' , #using the Django Rest Framework here 
    'rest_framework.authtoken', ##To allow the use of token to access our api 
+   #'rest_framework_simplejwt',
    'doctorapi',    
     'ckeditor',
     'django_countries',
     'bootstrap4',
    'lmsapp',
    'cities_light', # An installed package to manage countries and cities for the applications 
-   
+ 
    
    
    
 
     
 ]
+
 CITIES_LIGHT_INCLUDE_COUNTRIES = ['NGR','USA']
 CRISPY_TEMPLATE_PACK='bootstrap4'  #Other versions of bootstrap could also be specified 
 #We want a CustomUser authentication
@@ -121,6 +123,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'medicnewsblog.wsgi.application'
+
+#For asynchronous capabilities
+#ASGI_APPLICATION='medicnewsblog.routing.application'
 
 
 # Database
@@ -271,13 +276,32 @@ EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 ''' '''
 
 ##Rest Framework Configurations 
+# '''
+'''
 REST_FRAMEWORK={
+    #The codes here work ath the Project Level 
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        'rest_framework.authentication.TokenAuthentication' 
+        'rest_framework.authentication.TokenAuthentication' ,
+        'rest_framework.authentication.SessionAuthentication',
+        
         #To use this , you need to add rest_framework.authtoken in the installed apps 
         
     ]
+  
 }
+''' 
+#Configure authentication for the api app only 
+API_REST_FRAMEWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+       'rest_framework.authentication.TokenAuthentication',
+       #'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        # Add other permission classes if needed
+    ],
+}
+
 
 
 CKEDITOR_CONFIGS={
