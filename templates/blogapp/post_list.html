@@ -1,0 +1,33 @@
+{% extends 'blogapp/base.html' %}
+
+{% block title %}
+
+    All posts 
+{% endblock %}
+
+{% block content %}
+
+    {% if posts %}
+            {% for post in posts %}
+                <h2> 
+                    <a href="{{post.get_absolute_url}}"> {{post.title}} </a>
+                </h2>
+                <p class="date">
+                    Published {{post.publish}} by {{post.author }}
+                </p>
+                <p>
+                    {{ post.body|truncatewords:30|linebreaks}}
+                </p>
+
+            {% endfor %}
+
+    {% else %}
+    <h3>Thank you Father, no posts available </h3> 
+
+
+    {% include "blogapp/pagination.html" with page=posts %}
+
+    {% endif %}
+
+
+{% endblock %}

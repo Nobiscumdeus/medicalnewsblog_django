@@ -76,7 +76,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_countries',
     'bootstrap4',
-   'lmsapp',
+    'blogapp.apps.BlogappConfig',
    'cities_light', # An installed package to manage countries and cities for the applications 
  
    
@@ -336,6 +336,17 @@ LOCALE_PATHS=[
 LOGIN_REDIRECT_URL='accounts:home'
 LOGOUT_REDIRECT_URL='accounts:logout'
 
+
+
+#Email Configuration 
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='emmanueladeola990@gmail.com'
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_USE_TLS=config('EMAIL_USE_TLS')
 
 
 

@@ -34,8 +34,8 @@ urlpatterns = [
     path('medicblog/',include('medicblog.urls')),
     path('auth-api',include('rest_framework.urls')),
     path('api/',include('api.urls')),
-    path('lmsapp/',include('lmsapp.urls')),
-    path('doctorschat/',include('chat.urls')),
+    path('blogapp',include('blogapp.urls')),
+    #path('doctorschat/',include('chat.urls')),
     #Below are views that are used within the application 
     #path('login/',auth_views.LoginView.as_view(),name='login'),
     

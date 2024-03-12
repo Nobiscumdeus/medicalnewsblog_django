@@ -20,4 +20,5 @@ class Migration(migrations.Migration):
             name='sex',
             field=models.CharField(blank=True, choices=[('M', 'Male'), ('F', 'Female')], max_length=10, null=True),
         ),
+       
     ]
