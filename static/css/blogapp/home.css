@@ -1,0 +1,80 @@
+*{
+ padding:0;
+ margin:0;
+ 
+
+}
+body{
+    min-height:100vh;
+   
+    
+
+
+
+
+
+ 
+}
+.main{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+  
+    gap:2;
+}
+h2 a{
+    text-decoration:none;
+}
+
+
+
+.content{
+    flex-basis:60%;
+    display:flex;
+    flex-direction:column;
+    min-height:90vh;
+    padding:10px;
+}
+.sidebar{
+    
+    height:min-content;
+    flex-basis:20%;
+    
+    display:flex;
+    flex-direction:column;
+    padding:10px;
+    background:#333;
+    color:#fff;
+    min-height:auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

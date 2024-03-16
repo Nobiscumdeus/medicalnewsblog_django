@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -53,6 +54,7 @@ ALLOWED_HOSTS = ['localhost']  #### During production these must be set
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.postgres',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,18 +69,20 @@ INSTALLED_APPS = [
    # may not serve static files in production or to make the 
    # weight be thrown off it
    #django_taggit app is a library we use for tags
-   'taggit',
+  'taggit',
    'api', #The application using the rest framework 
    'rest_framework' , #using the Django Rest Framework here 
    'rest_framework.authtoken', ##To allow the use of token to access our api 
    #'rest_framework_simplejwt',
    'doctorapi',    
-    'ckeditor',
+    #'ckeditor',
     'django_countries',
     'bootstrap4',
     'blogapp.apps.BlogappConfig',
    'cities_light', # An installed package to manage countries and cities for the applications 
- 
+    #To utilize sitemaps in our django application (blogapp), we add sites and sitemap 
+    #'django.contrib.sites',
+    'django.contrib.sitemaps', #Then run migrations afterwards 
    
    
    
@@ -86,6 +90,7 @@ INSTALLED_APPS = [
     
 ]
 
+#SITE_ID=1
 CITIES_LIGHT_INCLUDE_COUNTRIES = ['NGR','USA']
 CRISPY_TEMPLATE_PACK='bootstrap4'  #Other versions of bootstrap could also be specified 
 #We want a CustomUser authentication
@@ -130,13 +135,17 @@ WSGI_APPLICATION = 'medicnewsblog.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+"""
+#The initial SQLIte3 database that comes pre-built with python, now am
+#using the PostgreSQL database below 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+"""
 
 ### During Production the databases will change depending on which database we are using 
 """
@@ -146,6 +155,20 @@ DATABASES={
 }
 
 """
+#PostgreSQl COnfigration with Django
+# 
+#Search pgadmin 4 to find the local PostgreSQL Application 
+#Seach psql to find the in-built command prompt for postgresql database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'medicblog',
+        'USER': 'admin',
+        'PASSWORD':config('PG_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation

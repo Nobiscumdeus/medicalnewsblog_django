@@ -22,7 +22,15 @@ from django.conf.urls.static import static
 from django.conf import settings 
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
+#In order to use sitemaps , we add the urls here from django
+from django.contrib.sitemaps.views import sitemap
+from blogapp.sitemaps import PostSitemap
+sitemaps={
+    
+    'posts':PostSitemap,
 
+    
+}
 '''
     Note, if you decide to use the auth_views here instead of the views of each app, django looks for the djanto templates in a registration folder,
     the main benefit of using the auth_views here may be to actually avoid repetition in all the apps
@@ -34,7 +42,7 @@ urlpatterns = [
     path('medicblog/',include('medicblog.urls')),
     path('auth-api',include('rest_framework.urls')),
     path('api/',include('api.urls')),
-    path('blogapp',include('blogapp.urls')),
+    path('blogapp/',include('blogapp.urls')),
     #path('doctorschat/',include('chat.urls')),
     #Below are views that are used within the application 
     #path('login/',auth_views.LoginView.as_view(),name='login'),
@@ -59,7 +67,9 @@ urlpatterns = [
     
     path('doctorapi/',include('doctorapi.urls')),
     
-    
+    #Adding our sitemap here 
+    path('sitemap.xml',sitemap,{'sitemaps':sitemaps},
+         name='django.contrib.sitemaps.views.sitemap')
  
     
     

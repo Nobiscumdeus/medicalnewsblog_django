@@ -8,7 +8,8 @@ from django.views.generic import ListView
 from .forms import EmailPostForm 
 from django.core.mail import send_mail
 from .forms import EmailPostForm,CommentForm
-
+from taggit.models import Tag
+from django.db.models import Count
 
 
 class PostListView(ListView):
@@ -17,8 +18,13 @@ class PostListView(ListView):
     paginate_by=3
     template_name='blogapp/post_list.html'
 
-def post_list(request):
-    object_list=Post.objects.all()
+def post_list(request,tag_slug=None):
+    object_list=Post.published.all()
+    tag=None
+    if tag_slug:
+        tag=get_object_or_404(Tag,slug=tag_slug)
+        object_list=object_list.filter(tags__in=[tag])
+        
     paginator=Paginator(object_list,3) #3 Posts in a single page 
     page=request.GET.get('page')
     try:
@@ -30,7 +36,7 @@ def post_list(request):
     except EmptyPage:
         #if page is out of range, then deliver the last page of results 
         posts=paginator.page(paginator.num_pages)
-    return render(request,'blogapp/post_list.html',{'posts':posts})
+    return render(request,'blogapp/post_list.html',{'posts':posts,'tag':tag})
 
 def post_detail(request,year,month,day,post):
     post=get_object_or_404(Post,slug=post,status='published',publish__year=year,publish__month=month,publish__day=day)
@@ -47,11 +53,18 @@ def post_detail(request,year,month,day,post):
             new_comment.post=post
             #Save the comment to the datatabse 
             new_comment.save()
+            #List of similar posts
+            post_tags_ids=post.tags.values_list('id',flat=True)
+            similar_posts=Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+            similar_posts=similar_posts.annotate(same_tags=Count('tags')).order_by('-same-tags','-publish')[:4]
+            
         else:
             comment_form=CommentForm()
-        return render(request,'blogapp/post_detail.html',{'post':post,'comments':comments,
+        return render(request,'blogapp/post_detail.html',{'post':post,
+                                                          'comments':comments,
                                                           'new_comment':new_comment,
-                                                          'comment_form':comment_form})
+                                                          'comment_form':comment_form,
+                                                          'similar_posts':similar_posts})
         
     
     

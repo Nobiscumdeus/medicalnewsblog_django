@@ -20,7 +20,7 @@ class Post(models.Model):
     body=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True) 
-    tags=TaggableManager() #This is comming from the taggit library installed
+    tags=TaggableManager(related_name='medicblog') #This is comming from the taggit library installed
     
 
     

@@ -1,6 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
-from ckeditor.fields import RichTextField
+#from ckeditor.fields import RichTextField
 from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator,MinValueValidator
 
@@ -67,8 +67,8 @@ class Doctor(models.Model):
     phone_number=models.CharField(max_length=15)
     
     email=models.EmailField()
-    education=RichTextField()
-    address=RichTextField()
+    education=models.TextField()
+    address=models.TextField()
     town=models.CharField(max_length=100,default="Prefer not to sat")
     state=models.CharField(max_length=100,default="Prefer not to say")
     skills=models.CharField(max_length=200,default="Coding")
@@ -90,9 +90,9 @@ class Doctor(models.Model):
     consultation_fee=models.DecimalField(
         max_digits=9,
         decimal_places=2)
-    working_hours=RichTextField()
-    bio=RichTextField()
-    awards_and_recognitions=RichTextField()
+    working_hours=models.TextField()
+    bio=models.TextField()
+    awards_and_recognitions=models.TextField()
     years_of_experience=models.PositiveIntegerField() 
     is_board_certified=models.BooleanField(default=False)
     license_number=models.CharField(
