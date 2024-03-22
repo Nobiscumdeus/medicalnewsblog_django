@@ -1,6 +1,4 @@
 from django.shortcuts import render,get_object_or_404,redirect
-
-# Create your views here.
 from django.http import HttpResponse
 from .models import Post,Comment,Tag
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
@@ -173,13 +171,7 @@ def post_search(request):
                 'results':results}
     )
     
-    
-    
-    
-    
-
-
-
+  
 def related_posts(request, tag_id):
     tag_name = get_object_or_404(Tag, id=tag_id)
     related_posts = tag_name.posts.all()

@@ -3,6 +3,9 @@ from django import forms
 
 # Register your models here.
 from .models import Post,Comment,Tag
+admin.site.site_header = 'Chasfat Applications'
+admin.site.index_title = 'Chasfat Projects Admin'
+admin.site.site_title = 'Chasfat Projects Admin'
 
 
 class TagsInputField(forms.CharField):
