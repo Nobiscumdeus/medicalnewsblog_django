@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 
 #To utilize taggit models 
-from taggit.managers import TaggableManager
+#from taggit.managers import TaggableManager
 
 
 
@@ -20,7 +20,7 @@ class Post(models.Model):
     body=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True) 
-    tags=TaggableManager(related_name='medicblog') #This is comming from the taggit library installed
+    #tags=TaggableManager(related_name='medicblog') #This is comming from the taggit library installed
     
 
     

@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from taggit.managers import TaggableManager
+
 
 # Create your models here.
 
@@ -12,7 +12,11 @@ class PublishedManager(models.Manager):
     def get_queryset(self):
         return super(PublishedManager,self).get_queryset().filter(status='published') 
      
-
+class Tag(models.Model):
+    name=models.CharField(max_length=50,unique=True)
+    
+    def __str__(self):
+        return self.name
     
     
 class Post(models.Model):
@@ -22,8 +26,7 @@ class Post(models.Model):
         ('draft','Draft'),
         ('published','Published')
     )
-    tags=TaggableManager() #This will help us add,retrieve,and remove tags from Post objects 
-    
+    tags=models.ManyToManyField(Tag,related_name='posts')
     title=models.CharField(max_length=250)
     slug=models.SlugField(max_length=250,unique_for_date='publish')
     author=models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='blog_posts')
@@ -58,6 +61,7 @@ class Comment(models.Model):
         return f"Comment by {self.name} on {self.post} "
     
     
+ 
     
     
     

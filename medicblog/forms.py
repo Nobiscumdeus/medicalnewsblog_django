@@ -20,7 +20,7 @@ class CommentForm(forms.Form):
 class CreatePostForm(forms.Form):
     class Meta:
         model=Post
-        fields=['title','author','body','tags']
+        fields=['title','author','body']
         
     def __init__ (self,*args,**kwargs):
         super().__init__ (*args,**kwargs)
@@ -32,7 +32,7 @@ class CreatePostForm(forms.Form):
 class EditPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title','author','body','tags']
+        fields = ['title','author','body']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,0 +1,54 @@
+{% extends 'blogapp/base.html' %}
+
+{% block title %}
+    Related Posts 
+
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'blogapp:post_list'%}" class="btn btn-sm btn-secondary" style="width:fit-content;">Return home </a> 
+
+{% if related_posts %}
+
+            
+
+    
+        <div class="card mt-3">
+            <div class="card-header">
+                <h2>Posts Associated with {{ tag_name.name }}</h2>
+            </div>
+            {% for post in related_posts %}
+            <div class="card-body">
+                <p>
+                    <h3> {{ post.title}} </h3>
+                    <a href="{{post.get_absolute_url}}" class="btn btn-sm btn-primary" style="width:fit-content;"> Check it out </a>
+            </p>
+            
+
+
+            </div>
+            {% endfor %}
+
+
+        </div>
+       
+{% endif %}
+   
+   
+    
+  
+        
+
+  
+
+    
+    </p>
+
+     
+        
+
+    
+
+
+
+{% endblock %}

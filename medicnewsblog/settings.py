@@ -69,7 +69,7 @@ INSTALLED_APPS = [
    # may not serve static files in production or to make the 
    # weight be thrown off it
    #django_taggit app is a library we use for tags
-  'taggit',
+  #'taggit',
    'api', #The application using the rest framework 
    'rest_framework' , #using the Django Rest Framework here 
    'rest_framework.authtoken', ##To allow the use of token to access our api 

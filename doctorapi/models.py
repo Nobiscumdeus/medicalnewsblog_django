@@ -1,5 +1,5 @@
 from django.db import models
-from taggit.managers import TaggableManager
+#from taggit.managers import TaggableManager
 #from ckeditor.fields import RichTextField
 from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator,MinValueValidator
@@ -73,7 +73,7 @@ class Doctor(models.Model):
     state=models.CharField(max_length=100,default="Prefer not to say")
     skills=models.CharField(max_length=200,default="Coding")
     hobbies=models.CharField(max_length=200,default="Swimming")
-    tags=TaggableManager()
+    #tags=TaggableManager()
    
     medical_school=models.ForeignKey(
         MedicalSchool,

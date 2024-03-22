@@ -1,7 +1,6 @@
 {% extends 'blogapp/base.html' %}
 <!-- Loading Custom Tags -->
-{% load custom_blogapp_tags %}
-{% show_recent_posts %}
+
 
 <!--Custom tag filters-->
 {% load custom_blogapp_filters %}
@@ -12,51 +11,48 @@
     All posts 
 {% endblock %}
 
+
 {% block content %}
-<p> {{ "hello" | capitalize_letter }} </p>
 
     {% if posts %}
-    {% if tag %}
-        <h2> Posts tagged with "{{ tag.name}}" </h2>
-    {% endif %}
+       
             {% for post in posts %}
                 <h2 class="text-jumbotron"> 
-                    <a href="{{post.get_absolute_url}}"> {{post.title}} </a>
+                    <a style="color:#000;font-weight:bold;" href="{{post.get_absolute_url}}"> {{post.title}} </a>
                 </h2>
-                <hr/>
+                
                 <p class="date">
-                    Published {{post.publish}} by {{post.author }}
+                    <strong> Published {{post.publish}} |  by {{post.author }} </strong>
                 </p>
                 <p>
                     {{ post.body|truncatewords:30|linebreaks}}
                 </p>
+                <a class="btn btn-transparent btn-sm" style="width:fit-content;padding:10px;border-radius:10px;border-color:#000;" href="{{post.get_absolute_url}}"> Continue reading <i class="fa fa-angle-double-right"></i></a>
                 <p class="tags">
-                    <!--Tags: {{post.tags.all|join:","}} -->
-                    {% for tag in post.tags.all %}
-
-                        <a href="{% url 'blogapp:post_list_by_tag' tag.slug %}">
-                            {{ tag.name }}
-                        </a>
-                        {% if not forloop.last %}, {% endif %}
+                <!-- {{post.tags.all|join:","}} -->
 
 
-                    {% endfor %}
+                   {% for tag in post.tags.all %}
+                   <a href="{% url 'blogapp:related_posts' tag.id %}">{{ tag.name }}</a>
+                   {% if not forloop.last %}, {% endif %}
+                 {% endfor %}
+                   
+                    
+
+                    <hr/>
                 
                 </p>
-                <p>
-                    Recent Posts 
-                    {% show_recent_posts %} <!--- Inclusion tag function in our template tags -->
-                </p>
-
+               
             {% endfor %}
+          
 
     {% else %}
-    <h3>Thank you Father, no posts available </h3> 
+    <h3>Ooops!!!, no posts available </h3> 
 
 
-    {% include "blogapp/pagination.html" with page=posts %}
-
+    
     {% endif %}
+    {% include "blogapp/pagination.html" with page=posts %}
 
 
 {% endblock %}

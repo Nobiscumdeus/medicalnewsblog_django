@@ -2,15 +2,16 @@ from django.shortcuts import render,get_object_or_404
 
 # Create your views here.
 from django.http import HttpResponse
-from .models import Post,Comment
+from .models import Post,Comment,Tag
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.views.generic import ListView
-from .forms import EmailPostForm 
+from .forms import EmailPostForm,SearchForm
 from django.core.mail import send_mail
 from .forms import EmailPostForm,CommentForm
-from taggit.models import Tag
-from django.db.models import Count
 
+
+from django.db.models import Count
+from django.contrib.postgres.search import SearchVector,SearchQuery,SearchRank
 
 class PostListView(ListView):
     queryset=Post.objects.all()
@@ -18,14 +19,11 @@ class PostListView(ListView):
     paginate_by=3
     template_name='blogapp/post_list.html'
 
-def post_list(request,tag_slug=None):
+def post_list(request):
     object_list=Post.published.all()
-    tag=None
-    if tag_slug:
-        tag=get_object_or_404(Tag,slug=tag_slug)
-        object_list=object_list.filter(tags__in=[tag])
+    
         
-    paginator=Paginator(object_list,3) #3 Posts in a single page 
+    paginator=Paginator(object_list,4) #3 Posts in a single page 
     page=request.GET.get('page')
     try:
         posts=paginator.page(page)
@@ -36,7 +34,7 @@ def post_list(request,tag_slug=None):
     except EmptyPage:
         #if page is out of range, then deliver the last page of results 
         posts=paginator.page(paginator.num_pages)
-    return render(request,'blogapp/post_list.html',{'posts':posts,'tag':tag})
+    return render(request,'blogapp/post_list.html',{'posts':posts})
 
 def post_detail(request,year,month,day,post):
     post=get_object_or_404(Post,slug=post,status='published',publish__year=year,publish__month=month,publish__day=day)
@@ -55,8 +53,8 @@ def post_detail(request,year,month,day,post):
             new_comment.save()
             #List of similar posts
             post_tags_ids=post.tags.values_list('id',flat=True)
-            similar_posts=Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
-            similar_posts=similar_posts.annotate(same_tags=Count('tags')).order_by('-same-tags','-publish')[:4]
+            #similar_posts=Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+            #similar_posts=similar_posts.annotate(same_tags=Count('tags')).order_by('-same-tags','-publish')[:4]
             
         else:
             comment_form=CommentForm()
@@ -64,7 +62,8 @@ def post_detail(request,year,month,day,post):
                                                           'comments':comments,
                                                           'new_comment':new_comment,
                                                           'comment_form':comment_form,
-                                                          'similar_posts':similar_posts})
+                                                          #'similar_posts':similar_posts
+                                                          })
         
     
     
@@ -96,11 +95,49 @@ def post_share(request,post_id):
         form=EmailPostForm()
     return render(request,'blogapp/post_share.html',{'form':form,'sent':sent})
 
+def post_search(request):
+    form=SearchForm()
+    query=None
+    results=[]
+    if 'query' in request.GET:
+        form=SearchForm(request.GET)    
+        if form.is_valid():
+            query=form.cleaned_data['query']
+            '''
+             results=Post.published.annotate(
+                search=SearchVector('title','body'),
+                ).filter(search=query)
+            '''
+            #search_vector=SearchVector('title','body')#
+            #Applying weights to our search
+            search_vector=SearchVector('title',weight='A') + SearchVector('body',weight='B')
+            search_query=SearchQuery(query)
+            results=Post.published.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector,search_query)
+                
+            ).filter(rank__gte=0.3).order_by('-rank')
+            #Initially filter(search=search_query).order_by('-rank)
+            
+           
+           
+    return render(request,'blogapp/post_search.html',
+            { 'form':form,
+                'query':query,
+                'results':results}
+    )
+    
+    
+    
+    
+    
 
 
 
-
-
+def related_posts(request, tag_id):
+    tag_name = get_object_or_404(Tag, id=tag_id)
+    related_posts = tag_name.posts.all()
+    return render(request, 'blogapp/related_posts.html', {'tag_name': tag_name, 'related_posts': related_posts})
 
 
 
