@@ -1,24 +1,67 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 
 # Create your views here.
 from django.http import HttpResponse
 from .models import Post,Comment,Tag
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.views.generic import ListView
-from .forms import EmailPostForm,SearchForm
+from .forms import EmailPostForm,SearchForm,PostForm
 from django.core.mail import send_mail
 from .forms import EmailPostForm,CommentForm
 
 
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector,SearchQuery,SearchRank
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from accounts.forms import CustomUserCreationForm
+
+from django.contrib.auth import login,logout
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirect to a success page or another view after registration
+            return redirect('blogapp:post_list')  # Redirect to the login page
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'blogapp/register.html', {'form': form})
+        
+'''
+
+def user_login(request):
+    if request.method=='POST':
+        form=AuthenticationForm(request,request.POST)
+        if form.is_valid():
+            user=form.get_user()
+            login(request,user)
+            return redirect('blogapp:post_list')
+        else:
+            form=AuthenticationForm()
+        return render(request,'blogapp/login.html',{'form':form})
+            
+
+
+'''
+
+def home(request):
+    return render(request,'blogapp/home.html')
+
+
+            
+'''
 
 class PostListView(ListView):
     queryset=Post.objects.all()
     context_object_name='posts'
     paginate_by=3
     template_name='blogapp/post_list.html'
+'''
 
+
+@login_required
 def post_list(request):
     object_list=Post.published.all()
     
@@ -36,6 +79,7 @@ def post_list(request):
         posts=paginator.page(paginator.num_pages)
     return render(request,'blogapp/post_list.html',{'posts':posts})
 
+@login_required
 def post_detail(request,year,month,day,post):
     post=get_object_or_404(Post,slug=post,status='published',publish__year=year,publish__month=month,publish__day=day)
     #List of active comments for this post 
@@ -72,6 +116,7 @@ def post_detail(request,year,month,day,post):
     
 
 #Sharing our posts via email
+@login_required
 def post_share(request,post_id):
     #Retrieve the post by id 
     post=get_object_or_404(Post,id=post_id)
@@ -95,6 +140,7 @@ def post_share(request,post_id):
         form=EmailPostForm()
     return render(request,'blogapp/post_share.html',{'form':form,'sent':sent})
 
+@login_required
 def post_search(request):
     form=SearchForm()
     query=None
@@ -140,11 +186,55 @@ def related_posts(request, tag_id):
     return render(request, 'blogapp/related_posts.html', {'tag_name': tag_name, 'related_posts': related_posts})
 
 
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            #Handle new tag 
+            new_tag_name=form.cleaned_data.get('new_tag')
+            if new_tag_name:
+                tag,created=Tag.objects.get_or_create(name=new_tag_name)
+                post.tags.add(tag)
+            return redirect('blogapp:post_list')
+    else:
+        form = PostForm()
+    return render(request, 'blogapp/create_post.html', {'form': form})
+
+@login_required
+def edit_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if post.author != request.user:
+        # Redirect or show error message if user doesn't have permission
+        return redirect('blogapp:post_list')
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('blogapp:post_list')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blogapp/edit_post.html', {'form': form})
 
 
+@login_required
+def delete_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if post.author != request.user:
+        # Redirect or show error message if user doesn't have permission
+        return redirect('blogapp:post_list')
+    if request.method == 'POST':
+        post.delete()
+        return redirect('blogapp:post_list')
+    return render(request, 'blogapp/delete_post.html', {'post': post})
 
-
-
+@login_required
+def my_posts(request):
+    user_posts = Post.objects.filter(author=request.user)
+    return render(request, 'blogapp/my_posts.html', {'user_posts': user_posts})
 
 
 

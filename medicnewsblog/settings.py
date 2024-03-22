@@ -356,8 +356,10 @@ TIME_ZONE = 'UTC'
 LOCALE_PATHS=[
     os.path.join(BASE_DIR,'locale'),
 ]
-LOGIN_REDIRECT_URL='accounts:home'
-LOGOUT_REDIRECT_URL='accounts:logout'
+LOGIN_REDIRECT_URL='blogapp:post_list'
+#LOGOUT_REDIRECT_URL='blogapp:logout'
+
+#LOGOUT_REDIRECT_URL = 'blogapp:home'  # Redirect to homepage after logout
 
 
 

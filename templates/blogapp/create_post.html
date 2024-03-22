@@ -1,0 +1,50 @@
+<!-- create_post.html -->
+
+{% extends 'blogapp/base.html' %}
+
+{% block title %}
+
+Create Post 
+
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9 offset-md-3">
+        <a href="{% url 'blogapp:post_list' %}" class="btn btn-sm btn-secondary">Back home </a>
+        <h2>Create Post</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-sm btn-success">Create Post</button>
+        </form>
+
+    </div>
+</div>
+        
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        $(document).ready(function() {
+            $('#id_title').on('input', function() {
+                var title = $(this).val();
+                var slug = slugify(title);
+                $('#id_slug').val(slug);
+            });
+        });
+    
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+
+    </script>
+
+{% endblock %}

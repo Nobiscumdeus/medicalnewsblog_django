@@ -1,0 +1,26 @@
+<!-- edit_post.html -->
+
+{% extends 'blogapp/base.html' %}
+
+{% block title %}
+
+Edit Post 
+
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8 offset-md-3">
+        <h2>Edit Post</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-sm btn-success">Submit</button>
+        </form>
+
+    </div>
+</div>
+  
+{% endblock %}

@@ -15,10 +15,14 @@ class CustomLoginForm(AuthenticationForm):
         required=True,
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Password'})
     )
+'''
     email = forms.EmailField(
         required=True,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Email'})
     )
+    
+'''
+
 '''
 
    

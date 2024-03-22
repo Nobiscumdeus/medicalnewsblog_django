@@ -1,0 +1,37 @@
+{% extends 'blogapp/base.html' %}
+
+{% block title %}
+My Posts 
+
+{% endblock %}
+
+{% block content %}
+
+    {% if user_posts %}
+
+    {% for post in user_posts %}
+
+    <div class="card">
+        <div class="card-body pt-2">
+            <h4> 
+                <a class="btn btn-sm btn-secondary" href="{{post.get_absolute_url}}"> {{ post.title}} </a>
+            </h4>
+            {{ post.body|truncatewords_html:5 }}
+
+        </div>
+    </div>
+   
+    {% endfor %}
+
+    {% else %}
+    <p>
+        <h3>
+
+            Ooops !!!, You don't have any Posts yet <br/>
+        <a href="{% url 'blogapp:create_post' %}"> Create Post(s) here </a>
+        </h3>
+    </p> 
+
+    {% endif %}
+
+{% endblock %}

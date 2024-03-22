@@ -7,7 +7,6 @@
 }
 body{
     min-height:100vh;
-   
     
 
 
@@ -22,6 +21,12 @@ body{
     justify-content:space-between;
   
     gap:2;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #4CAF50, #ffffff); /* Gradient background */
+    background-size: cover; /* Cover the entire viewport */
+    background-repeat: no-repeat; /* Do not repeat the background */
+   
+    
 }
 a{
     text-decoration:none;
@@ -50,6 +55,10 @@ h2 a{
     background:#333;
     color:#fff;
     min-height:auto;
+}
+
+.text-danger {
+    color: #dc3545; /* Red color */
 }
 
 
