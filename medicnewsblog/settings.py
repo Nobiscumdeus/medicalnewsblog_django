@@ -46,7 +46,7 @@ DEBUG = True   ###For production purpose note that
 ###DEBUG=env.bool("DEBUG",default=FALSE)  ##It means if DEBUG is not found, the it should be false, hence we are in development
 
 
-ALLOWED_HOSTS = ['localhost']  #### During production these must be set 
+ALLOWED_HOSTS = ['localhost','127.0.0.1']  #### During production these must be set 
 ###Production Purpose 
 ### ALLOWED_HOSTS=['herokuapp.com','localhost','127.0.0.1']
 
@@ -54,6 +54,7 @@ ALLOWED_HOSTS = ['localhost']  #### During production these must be set
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.postgres',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,13 +83,14 @@ INSTALLED_APPS = [
    'cities_light', # An installed package to manage countries and cities for the applications 
     #To utilize sitemaps in our django application (blogapp), we add sites and sitemap 
     #'django.contrib.sites',
-    'django.contrib.sitemaps', #Then run migrations afterwards 
-   
+    'django.contrib.sitemaps', #Then run migrations afterwards
+    'chatting',
    
    
 
     
 ]
+ASGI_APPLICATION='medicnewsblog.asgi.application'
 
 #SITE_ID=1
 CITIES_LIGHT_INCLUDE_COUNTRIES = ['NGR','USA']
@@ -129,6 +131,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medicnewsblog.wsgi.application'
 
+
+
+CHANNEL_LAYERS={
+    'default':{
+        'BACKEND':'channels.layers.InMemoryChannelLayer',
+    }
+}
 #For asynchronous capabilities
 #ASGI_APPLICATION='medicnewsblog.routing.application'
 
@@ -356,11 +365,16 @@ TIME_ZONE = 'UTC'
 LOCALE_PATHS=[
     os.path.join(BASE_DIR,'locale'),
 ]
-LOGIN_REDIRECT_URL='blogapp:post_list'
+#For Blogapp application 
+#LOGIN_REDIRECT_URL='blogapp:post_list'
 #LOGOUT_REDIRECT_URL='blogapp:logout'
 
 #LOGOUT_REDIRECT_URL = 'blogapp:home'  # Redirect to homepage after logout
 
+#For Chatting Application
+LOGOUT_REDIRECT_URL='chatting:front_page'
+LOGIN_REDIRECT_URL='chatting:rooms'
+LOGIN_URL='chatting:login'
 
 
 #Email Configuration 

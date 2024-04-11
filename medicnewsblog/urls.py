@@ -66,6 +66,7 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     
     path('doctorapi/',include('doctorapi.urls')),
+    path('chatting/',include('chatting.urls')),
     
     #Adding our sitemap here 
     path('sitemap.xml',sitemap,{'sitemaps':sitemaps},
