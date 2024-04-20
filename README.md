@@ -11,6 +11,10 @@ Below are the explanations of each of the folders and the content
     <th> Function </td>
     
   </tr>
+   <tr>
+    <td>chatting</td>
+    <td> This applications utilizes the Django channels technology to create a chat application  </td>
+  </tr>
   <tr>
     <td>accounts </td>
     <td> This page customizes Django sign up classes to sign in a user </td>
