@@ -39,7 +39,7 @@ Below are the explanations of each of the folders and the content
       <p> The Project follows the standard approach of a Django development and can be easily deployed very quickly for use </p>
       <p> The functions are mainly class based views unlike the function based ones </p>
       <p> It uses Python 3.10 and Django 4.2</p>
-      <p> The oroject includes libraries and dependecies such as guncorn, crispy-forms, environs[django], whitenoise etc to aid its functionality</p>
+      <p> The project includes libraries and dependecies such as guncorn, crispy-forms, environs[django], whitenoise etc to aid its functionality</p>
       <p> open to further collaboration </p>
       <p> Developer portfolio is at <a href="https://chasfatprojects.netlify.app">Olumide E. Adeola Portfolio</a></p>
     </td>
